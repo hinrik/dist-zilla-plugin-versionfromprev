@@ -5,7 +5,7 @@ use Moose;
 
 sub last_version {
     chomp(my @tags = qx[ git tag -l ]);
-    my @sorted = sort { $b <=> $a } @tags;
+    my @sorted = sort { $b cmp $a } @tags;
     my $last = $sorted[0];
 
     return $last eq '' ? undef : $last;

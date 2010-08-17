@@ -2,6 +2,10 @@ Revision history for Dist::Zilla::Plugin::VersionFromPrev
 
 {{$NEXT}}
 
+    - Use Version::Next to bump versions. Now we can bump GNU'-style
+      versions too. Style::* classes now only provide default minimum
+      version numbers. Added a GNU class for that purpose.
+
 0.05 2010-06-08 17:00:11
 
     - Fix issue #1: Don't depend on `git tag -l | sort -nr | head -n1`

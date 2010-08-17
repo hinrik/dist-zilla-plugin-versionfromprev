@@ -2,6 +2,7 @@ package Dist::Zilla::Plugin::VersionFromPrev;
 
 use 5.010;
 use Moose;
+use Version::Next 'next_version';
 
 with 'Dist::Zilla::Role::VersionProvider';
 
@@ -34,7 +35,9 @@ sub provide_version {
 
     my $last_version = $version_finder_obj->last_version($self);
 
-    return $ENV{BUMP_VERSION_TO} // $version_style_obj->bump($self, $last_version);
+    return $ENV{BUMP_VERSION_TO} if defined $ENV{BUMP_VERSION_TO};
+    return $version_style_obj->min_version($self) if !defined $last_version;
+    return next_version($last_version);
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -74,8 +77,9 @@ L<*::Git::LastVersion|Dist::Zilla::Plugin::VersionFromPrev::Finder::Git::LastVer
 
 =item *
 
-We'll bump the version internally using
-e.g. L<*::Classic|Dist::Zilla::Plugin::VersionFromPrev::Style::Classic>.
+We'll bump the version internally using L<Version::Next>, or supply a default
+minimum version number according to e.g.
+L<*::Classic|Dist::Zilla::Plugin::VersionFromPrev::Style::Classic>.
 
 =item *
 
@@ -98,7 +102,7 @@ L<Dist::Zilla::Plugin::VersionFromPrev::Finder> namespaces.
 
 The short name of the version style plugin you want to
 use. L<"Classic"|Dist::Zilla::Plugin::VersionFromPrev::Style::Classic>
-by default.
+by default. Only used when the module has no version number yet.
 
 =head2 version_provider
 
