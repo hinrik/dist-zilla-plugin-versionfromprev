@@ -1,4 +1,4 @@
-package Dist::Zilla::Plugin::VersionFromPrev::Style::Classic;
+package Dist::Zilla::Plugin::VersionFromPrev::Style::GNU;
 
 use 5.010;
 use Moose;
